@@ -1,5 +1,5 @@
-
 /*
+
 Given a server log file with a 1000 lines in the format below, write a function that returns the 10 IP addresses tha accessed
 the server the most often.
 
@@ -12,44 +12,71 @@ The goal is to find the IP addresses that accessed the server the most, regardle
 */
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <map>
+#include <algorithm>
+
 using namespace std;
 
-/// @brief 
-/// This function   returns the number of IP addresses that accessed the server
-/// the most recently accessed address of 
-void server_most_logger()
-{
-    
-    ifstream in("file.csv");
-    string line, ip;
-    map<string, int> count;
-    int maxCount = 0;
-    while (getline(in, line))
-    {
-        istringstream iss(line);
-        getline(iss, line, ',');
-        getline(iss, line, ',');
-        getline(iss, ip, ',');
-        if (++count[ip] > maxCount)
-            maxCount = count[ip];
+struct Record {
+    int timestamp;
+    string url;
+    string ip;
+};
+
+// This function will take a server log file as input and return a vector of the top 10 IP addresses
+// that accessed the server the most.
+vector<string> getTop10IPs(char* filename) {
+    ifstream file(filename);
+    vector<Record> records;
+    vector<string> top10;
+    map<string, int> counts;
+
+    // Parse the CSV file and store the data in the records vector
+    string line;
+    while (getline(file, line)) {
+        Record record;
+        int firstComma = line.find(',');
+        int secondComma = line.find(',', firstComma + 1);
+        record.timestamp = stoi(line.substr(0, firstComma));
+        record.url = line.substr(firstComma + 2, secondComma - firstComma - 3);
+        record.ip = line.substr(secondComma + 2);
+        records.push_back(record);
     }
-    vector<string> mostIps;
-    for (auto &p : count)
-        if (p.second == maxCount)
-            mostIps.push_back(p.first);
-    sort(mostIps.begin(), mostIps.end());
-    for (auto &ip : mostIps)
-        cout << ip << '\n';
+
+    // Count the number of times each IP address appears in the records vector
+    for (int i = 0; i < records.size(); i++) {
+        string ip = records[i].ip;
+        if (counts.find(ip) == counts.end()) {
+            counts[ip] = 1;
+        }
+        else {
+            counts[ip]++;
+        }
+    }
+
+    // Sort the counts in reverse order (largest to smallest)
+    vector<pair<string, int>> sortedCounts;
+    for (auto it = counts.begin(); it != counts.end(); it++) {
+        sortedCounts.push_back(make_pair(it->first, it->second));
+    }
+    sort(sortedCounts.begin(), sortedCounts.end(), [](auto &a, auto &b) {
+        return a.second > b.second;
+    });
+
+    // Add the top 10 IP addresses to the top10 vector
+    for (int i = 0; i < 10; i++) {
+        top10.push_back(sortedCounts[i].first);
+    }
+
+    return top10;
 }
 
-int main()
-{
-    server_most_logger();
-
-    return 0;
+int main() {
+    // Test the getTop10IPs function
+    vector<string> top10 = getTop10IPs("file.csv");
+    for (int i = 0; i < top10.size(); i++) {
+        cout << top10[i] << endl;
+    }
 }
