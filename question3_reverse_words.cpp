@@ -7,30 +7,73 @@ Note that s may contain leading or trailing spaces or multiple spaces between tw
 a single space separting the words.
 Do no include any extra spaces.
 */
-#include<iostream>
-#include<string>
-#include<sstream>
-#include<algorithm>
+
+#include <iostream>
+#include <string>
 using namespace std;
 
-//function to reverse the input string
-string reverseWords(string input){
-    stringstream ss(input);
-    string ans;
-    string word;
-    while(ss >> word)
+void reverseWords(string &s)
+{
+    int lengthOfString = s.length();
+    string reversedString = "";
+    string word = "";
+
+    if (s[0] == ' ')
     {
-        reverse(word.begin(),word.end());
-        ans += word;
-        ans += " ";
+        int counter = 0;
+        while (s[counter] == ' ')
+        {
+            counter++;
+        }
+        s = s.substr(counter, lengthOfString);
     }
-    ans.pop_back();
-    return ans;
+
+    for (int i = 0; i < lengthOfString; i++)
+    {
+        if (s[i] == ' ')
+        {
+            reversedString = ' ' + word + reversedString;
+            word = "";
+        }
+        else
+        {
+            word = word + s[i];
+        }
+
+        if (i == lengthOfString - 1)
+        {
+            reversedString = word + reversedString;
+        }
+    }
+
+    s = reversedString;
+
+    if (reversedString[0] == ' ')
+    {
+        int counter = 0;
+        while (reversedString[counter] == ' ')
+        {
+            counter++;
+        }
+        s = reversedString.substr(counter, lengthOfString);
+    }
 }
 
-int main(){
-    string input;
-    getline(cin, input);
-    cout<<reverseWords(input);
+int main()
+{
+    string input = "  hello world!  ";
+    cout << "Input: " << input << endl;
+    reverseWords(input);
+
+    if (input[0] == ' ')
+    {
+        int counter = 0;
+        while (input[counter] == ' ')
+        {
+            counter++;
+        }
+        input = input.substr(counter, input.length());
+    }
+    cout << "Output: " << input << endl;
     return 0;
 }
