@@ -3,7 +3,6 @@ By definition the first two numbers in the fibonacci sequence are 0,1 and each s
 For example, the first ten Fibonacci numbers are:
 0,1,1,2,3,5,8,13,21,34
 Write afunction that accepts a number and returns the number at that position in the Finacci sequence.
-Write in C++.
 */
 
 #include <iostream>
@@ -28,8 +27,9 @@ int Fib(int n)
 //drive code
 int main()
 {
-	int FibNumber = Fib(6);
-	cout << "Fibonacci number at position 6 is " << FibNumber << endl;
-	system("PAUSE");
+    int pos = 4;
+	int FibNumber = Fib(pos-1);
+	cout << "Fibonacci number at position "<<pos<<" is " << FibNumber << endl;
+	cin.get();
 	return 0;
 }
