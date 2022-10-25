@@ -61,19 +61,19 @@ void reverseWords(string &s)
 
 int main()
 {
-    string input = "  hello world!  ";
-    cout << "Input: " << input << endl;
-    reverseWords(input);
+    string s = "  hello world!  ";
+    cout << "Input: " << s << endl;
+    reverseWords(s);
 
-    if (input[0] == ' ')
+    if (s[0] == ' ')
     {
         int counter = 0;
-        while (input[counter] == ' ')
+        while (s[counter] == ' ')
         {
             counter++;
         }
-        input = input.substr(counter, input.length());
+        s = s.substr(counter, s.length());
     }
-    cout << "Output: " << input << endl;
+    cout << "Output: " << s << endl;
     return 0;
 }
