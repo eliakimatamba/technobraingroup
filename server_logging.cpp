@@ -1,6 +1,6 @@
 /*
 
-Given a server log file with a 1000 lines in the format below, write a function that returns the 10 IP addresses tha accessed
+Given a server log file with a 1000 lines in the format below, write a function that returns the 10 IP addresses that accessed
 the server the most often.
 
 1657628632, /index.html, 156.34.23.65
